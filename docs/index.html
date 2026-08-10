@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Rotator - Anonymous IP Rotation Tool</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="particles" id="particles"></div>
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+        <div class="grid-bg"></div>
+    </div>
+
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-brand">
+                <div class="brand-icon">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <circle cx="16" cy="16" r="14" stroke="url(#grad1)" stroke-width="2"/>
+                        <path d="M10 16L14 20L22 12" stroke="url(#grad1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <defs>
+                            <linearGradient id="grad1" x1="0" y1="0" x2="32" y2="32">
+                                <stop offset="0%" stop-color="#6366f1"/>
+                                <stop offset="100%" stop-color="#a855f7"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <span class="brand-text">IP Rotator</span>
+            </a>
+            <div class="nav-menu" id="navMenu">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#how-it-works" class="nav-link">How It Works</a>
+                <a href="#commands" class="nav-link">Commands</a>
+                <a href="#security" class="nav-link">Security</a>
+                <a href="https://github.com/jojin1709/ip-rotator" target="_blank" class="nav-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                    </svg>
+                    GitHub
+                </a>
+            </div>
+            <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero" id="hero">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="hero-badge animate-fade-in">
+                        <span class="badge-dot"></span>
+                        v1.0.0 • Bug Bounty Essential
+                    </div>
+                    <h1 class="hero-title animate-slide-up">
+                        <span class="line">Rotate Your</span>
+                        <span class="line gradient-text">IP Address</span>
+                        <span class="line">Anonymously</span>
+                    </h1>
+                    <p class="hero-desc animate-slide-up delay-1">
+                        Powerful CLI tool for IP rotation through Tor, proxies, and VPN. 
+                        Randomize MAC addresses, detect security leaks, and stay anonymous online.
+                    </p>
+                    <div class="hero-buttons animate-slide-up delay-2">
+                        <a href="#quickstart" class="btn btn-primary">
+                            <span>Get Started</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                        <a href="https://github.com/jojin1709/ip-rotator" target="_blank" class="btn btn-ghost">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                            </svg>
+                            <span>View Source</span>
+                        </a>
+                    </div>
+                    <div class="hero-stats animate-fade-in delay-3">
+                        <div class="stat-item">
+                            <div class="stat-number" data-target="17">0</div>
+                            <div class="stat-label">Commands</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" data-target="3">0</div>
+                            <div class="stat-label">Rotation Modes</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" data-target="100">0</div>
+                            <div class="stat-label">% Anonymous</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-visual animate-fade-in delay-2">
+                    <div class="terminal-window">
+                        <div class="terminal-header">
+                            <div class="terminal-controls">
+                                <span class="control close"></span>
+                                <span class="control minimize"></span>
+                                <span class="control maximize"></span>
+                            </div>
+                            <div class="terminal-title">rotator.js</div>
+                        </div>
+                        <div class="terminal-body">
+                            <div class="terminal-content" id="terminalContent">
+                                <div class="terminal-line">
+                                    <span class="prompt">❯</span>
+                                    <span class="command" id="typewriter"></span>
+                                    <span class="cursor">▊</span>
+                                </div>
+                                <div class="terminal-output" id="terminalOutput"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <div class="mouse">
+                    <div class="wheel"></div>
+                </div>
+                <span>Scroll to explore</span>
+            </div>
+        </section>
+
+        <section class="features" id="features">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Features</span>
+                    <h2 class="section-title">Everything You Need</h2>
+                    <p class="section-desc">Complete toolkit for IP rotation, MAC changing, and security testing</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card" data-tilt>
+                        <div class="feature-glow"></div>
+                        <div class="feature-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                <path d="M15 9l-6 6M9 9l6 6"/>
+                            </svg>
+                        </div>
+                        <h3>IP Rotation</h3>
+                        <p>Rotate through Tor network, HTTP/SOCKS proxies, or VPN connections automatically</p>
+                        <div class="feature-tags">
+                            <span class="tag">Tor</span>
+                            <span class="tag">Proxy</span>
+                            <span class="tag">VPN</span>
+                        </div>
+                    </div>
+                    <div class="feature-card" data-tilt>
+                        <div class="feature-glow"></div>
+                        <div class="feature-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <rect x="2" y="6" width="20" height="12" rx="2"/>
+                                <path d="M6 12h.01M10 12h.01"/>
+                            </svg>
+                        </div>
+                        <h3>MAC Changer</h3>
+                        <p>Randomize, set, or restore MAC addresses on any network interface</p>
+                        <div class="feature-tags">
+                            <span class="tag">Randomize</span>
+                            <span class="tag">Restore</span>
+                            <span class="tag">Custom</span>
+                        </div>
+                    </div>
+                    <div class="feature-card" data-tilt>
+                        <div class="feature-glow"></div>
+                        <div class="feature-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
+                            </svg>
+                        </div>
+                        <h3>Proxy Pool</h3>
+                        <p>Load hundreds of proxies, test connectivity, and rotate through them</p>
+                        <div class="feature-tags">
+                            <span class="tag">HTTP</span>
+                            <span class="tag">SOCKS4</span>
+                            <span class="tag">SOCKS5</span>
+                        </div>
+                    </div>
+                    <div class="feature-card" data-tilt>
+                        <div class="feature-glow"></div>
+                        <div class="feature-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                        </div>
+                        <h3>Security Checks</h3>
+                        <p>Detect DNS leaks, WebRTC IP exposure, and other privacy vulnerabilities</p>
+                        <div class="feature-tags">
+                            <span class="tag">DNS Leak</span>
+                            <span class="tag">WebRTC</span>
+                            <span class="tag">Audit</span>
+                        </div>
+                    </div>
+                    <div class="feature-card" data-tilt>
+                        <div class="feature-glow"></div>
+                        <div class="feature-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                        </div>
+                        <h3>User-Agent Rotation</h3>
+                        <p>Randomize browser fingerprints to avoid detection</p>
+                        <div class="feature-tags">
+                            <span class="tag">Chrome</span>
+                            <span class="tag">Firefox</span>
+                            <span class="tag">Safari</span>
+                        </div>
+                    </div>
+                    <div class="feature-card" data-tilt>
+                        <div class="feature-glow"></div>
+                        <div class="feature-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                <path d="M3 9h18M9 21V9"/>
+                            </svg>
+                        </div>
+                        <h3>Web Dashboard</h3>
+                        <p>Real-time monitoring with rotation history and network statistics</p>
+                        <div class="feature-tags">
+                            <span class="tag">Live</span>
+                            <span class="tag">Charts</span>
+                            <span class="tag">Logs</span>
+                        </div>
+                    </div>
+                    <div class="feature-card" data-tilt>
+                        <div class="feature-glow"></div>
+                        <div class="feature-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                            </svg>
+                        </div>
+                        <h3>Kill Switch</h3>
+                        <p>Block internet connection if rotation fails to protect your identity</p>
+                        <div class="feature-tags">
+                            <span class="tag">Auto</span>
+                            <span class="tag">iptables</span>
+                            <span class="tag">Safety</span>
+                        </div>
+                    </div>
+                    <div class="feature-card" data-tilt>
+                        <div class="feature-glow"></div>
+                        <div class="feature-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+                                <polyline points="17 21 17 13 7 13 7 21"/>
+                                <polyline points="7 3 7 8 15 8"/>
+                            </svg>
+                        </div>
+                        <h3>Config Profiles</h3>
+                        <p>Save and load different configurations for different targets</p>
+                        <div class="feature-tags">
+                            <span class="tag">Save</span>
+                            <span class="tag">Load</span>
+                            <span class="tag">Export</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="how-it-works" id="how-it-works">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">How It Works</span>
+                    <h2 class="section-title">Simple 3-Step Process</h2>
+                    <p class="section-desc">Get started in under a minute</p>
+                </div>
+                <div class="steps-container">
+                    <div class="step-card">
+                        <div class="step-number">01</div>
+                        <div class="step-content">
+                            <h3>Install</h3>
+                            <p>Clone the repository and install dependencies</p>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-dot"></span>
+                                    <span class="code-dot"></span>
+                                    <span class="code-dot"></span>
+                                    <span class="code-title">Terminal</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                </div>
+                                <pre><code>git clone https://github.com/jojin1709/ip-rotator.git
+cd ip-rotator
+npm install</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">02</div>
+                        <div class="step-content">
+                            <h3>Configure</h3>
+                            <p>Set up your preferred rotation mode</p>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-dot"></span>
+                                    <span class="code-dot"></span>
+                                    <span class="code-dot"></span>
+                                    <span class="code-title">Terminal</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                </div>
+                                <pre><code>node rotator.js config --init
+node rotator.js config --set mode=tor</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">03</div>
+                        <div class="step-content">
+                            <h3>Start Rotating</h3>
+                            <p>Launch the IP rotator and stay anonymous</p>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-dot"></span>
+                                    <span class="code-dot"></span>
+                                    <span class="code-dot"></span>
+                                    <span class="code-title">Terminal</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                </div>
+                                <pre><code>node rotator.js start --mode tor --interval 60</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="commands" id="commands">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Commands</span>
+                    <h2 class="section-title">Full Command Reference</h2>
+                    <p class="section-desc">17 powerful commands for complete IP and MAC management</p>
+                </div>
+                <div class="commands-tabs">
+                    <button class="tab-btn active" data-tab="core">Core</button>
+                    <button class="tab-btn" data-tab="mac">MAC</button>
+                    <button class="tab-btn" data-tab="proxy">Proxy</button>
+                    <button class="tab-btn" data-tab="security">Security</button>
+                    <button class="tab-btn" data-tab="data">Data</button>
+                </div>
+                <div class="commands-content">
+                    <div class="tab-panel active" id="panel-core">
+                        <div class="command-item">
+                            <div class="command-name">status</div>
+                            <div class="command-desc">Show current IP, MAC, and rotation status</div>
+                            <div class="command-example">node rotator.js status</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command-name">start</div>
+                            <div class="command-desc">Start IP/MAC rotation with options</div>
+                            <div class="command-example">node rotator.js start --mode tor --interval 60</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command-name">stop</div>
+                            <div class="command-desc">Stop all rotation activity</div>
+                            <div class="command-example">node rotator.js stop</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command-name">rotate</div>
+                            <div class="command-desc">Rotate IP immediately</div>
+                            <div class="command-example">node rotator.js rotate --mode proxy</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command-name">quick --test</div>
+                            <div class="command-desc">Quick connectivity and IP test</div>
+                            <div class="command-example">node rotator.js quick --test</div>
+                        </div>
+                    </div>
+                    <div class="tab-panel" id="panel-mac">
+                        <div class="command-item">
+                            <div class="command-name">mac --show</div>
+                            <div class="command-desc">Show current MAC address</div>
+                            <div class="command-example">node rotator.js mac --show</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command-name">mac --random</div>
+                            <div class="command-desc">Randomize MAC address</div>
+                            <div class="command-example">node rotator.js mac --random</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command-name">mac --set</div>
+                            <div class="command-desc">Set specific MAC address</div>
+                            <div class="command-example">node rotator.js mac --set 00:11:22:33:44:55</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command-name">mac --restore</div>
+                            <div class="command-desc">Restore original MAC address</div>
+                            <div class="command-example">node rotator.js mac --restore</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command-name">interfaces</div>
+                            <div class="command-desc">List all network interfaces</div>
+                            <div class="command-example">node rotator.js interfaces</div>
+                        </div>
+                    </div>
+                    <div class="tab-panel" id="panel-proxy">
+                        <div class="command-item">
+                            <div class="command-name">proxy --add</div>
+                            <div class="command-desc">Add a proxy to the pool</div>
+                            <div class="command-example">node rotator.js proxy --add socks5://127.0.0.1:9050</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command-name">proxy --file</div>
+                            <div class="command-desc">Load proxies from file</div>
+                            <div class="command-example">node rotator.js proxy --file proxies.txt</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command-name">proxy --test</div>
+                            <div class="command-desc">Test all proxies in pool</div>
+                            <div class="command-example">node rotator.js proxy --test</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command-name">speed</div>
+                            <div class="command-desc">Test proxy speed and latency</div>
+                            <div class="command-example">node rotator.js speed --file proxies.txt</div>
+                        </div>
+                    </div>
+                    <div class="tab-panel" id="panel-security">
+                        <div class="command-item">
+                            <div class="command-name">security --dns</div>
+                            <div class="command-desc">Check for DNS leaks</div>
+                            <div class="command-example">node rotator.js security --dns</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command-name">security --webrtc</div>
+                            <div class="command-desc">Check for WebRTC IP leaks</div>
+                            <div class="command-example">node rotator.js security --webrtc</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command-name">security --all</div>
+                            <div class="command-desc">Run all security checks</div>
+                            <div class="command-example">node rotator.js security --all</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command-name">check</div>
+                            <div class="command-desc">Quick full security audit</div>
+                            <div class="command-example">node rotator.js check</div>
+                        </div>
+                    </div>
+                    <div class="tab-panel" id="panel-data">
+                        <div class="command-item">
+                            <div class="command-name">export --history</div>
+                            <div class="command-desc">Export rotation history</div>
+                            <div class="command-example">node rotator.js export --history -f csv</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command-name">profiles --save</div>
+                            <div class="command-desc">Save current config as profile</div>
+                            <div class="command-example">node rotator.js profiles --save bugbounty</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command-name">profiles --load</div>
+                            <div class="command-desc">Load a saved profile</div>
+                            <div class="command-example">node rotator.js profiles --load bugbounty</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command-name">dashboard</div>
+                            <div class="command-desc">Start web dashboard</div>
+                            <div class="command-example">node rotator.js dashboard --port 8080</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="security" id="security">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Security</span>
+                    <h2 class="section-title">Stay Protected</h2>
+                    <p class="section-desc">Built-in security checks to ensure your anonymity</p>
+                </div>
+                <div class="security-grid">
+                    <div class="security-card">
+                        <div class="security-icon pulse">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="M21 21l-4.35-4.35"/>
+                            </svg>
+                        </div>
+                        <h3>DNS Leak Detection</h3>
+                        <p>Checks if DNS requests bypass your proxy/Tor and reveal your real IP to DNS servers.</p>
+                        <div class="security-status">
+                            <span class="status-dot green"></span>
+                            <span>Protected</span>
+                        </div>
+                    </div>
+                    <div class="security-card">
+                        <div class="security-icon pulse">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </div>
+                        <h3>WebRTC Leak Detection</h3>
+                        <p>Detects if WebRTC is exposing your local or public IP address through browser vulnerabilities.</p>
+                        <div class="security-status">
+                            <span class="status-dot green"></span>
+                            <span>Protected</span>
+                        </div>
+                    </div>
+                    <div class="security-card">
+                        <div class="security-icon pulse">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                <path d="M9 12l2 2 4-4"/>
+                            </svg>
+                        </div>
+                        <h3>Kill Switch</h3>
+                        <p>Automatically blocks internet connection if rotation fails, preventing IP exposure.</p>
+                        <div class="security-status">
+                            <span class="status-dot yellow"></span>
+                            <span>Optional</span>
+                        </div>
+                    </div>
+                    <div class="security-card">
+                        <div class="security-icon pulse">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                            </svg>
+                        </div>
+                        <h3>Full Security Audit</h3>
+                        <p>Run all checks at once with detailed report on your anonymity status.</p>
+                        <div class="security-status">
+                            <span class="status-dot green"></span>
+                            <span>Available</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-card">
+                    <div class="cta-glow"></div>
+                    <h2>Ready to Stay Anonymous?</h2>
+                    <p>Clone the repository and start rotating in under a minute</p>
+                    <div class="code-block center">
+                        <div class="code-header">
+                            <span class="code-dot"></span>
+                            <span class="code-dot"></span>
+                            <span class="code-dot"></span>
+                            <span class="code-title">Quick Install</span>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <pre><code>git clone https://github.com/jojin1709/ip-rotator.git && cd ip-rotator && npm install</code></pre>
+                    </div>
+                    <a href="https://github.com/jojin1709/ip-rotator" target="_blank" class="btn btn-primary btn-large">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                        </svg>
+                        <span>View on GitHub</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="brand-icon">
+                        <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+                            <circle cx="16" cy="16" r="14" stroke="url(#grad2)" stroke-width="2"/>
+                            <path d="M10 16L14 20L22 12" stroke="url(#grad2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <defs>
+                                <linearGradient id="grad2" x1="0" y1="0" x2="32" y2="32">
+                                    <stop offset="0%" stop-color="#6366f1"/>
+                                    <stop offset="100%" stop-color="#a855f7"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <span>IP Rotator</span>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com/jojin1709/ip-rotator" target="_blank">GitHub</a>
+                    <a href="https://github.com/jojin1709" target="_blank">Profile</a>
+                </div>
+                <div class="footer-copy">
+                    Built by <strong>JOJIN JOHN</strong> • MIT License
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

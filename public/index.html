@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Rotator - Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0d1117; color: #c9d1d9; }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid #21262d; }
+        h1 { color: #58a6ff; font-size: 24px; }
+        
+        .status-card { background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 20px; margin: 10px 0; }
+        .status-card h3 { color: #58a6ff; margin-bottom: 15px; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+        
+        .stat { background: #1c2128; padding: 15px; border-radius: 6px; }
+        .stat-label { color: #8b949e; font-size: 12px; text-transform: uppercase; }
+        .stat-value { color: #f0f6fc; font-size: 24px; font-weight: bold; margin-top: 5px; }
+        .stat-value.online { color: #3fb950; }
+        .stat-value.offline { color: #f85149; }
+        
+        .btn { background: #238636; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; }
+        .btn:hover { background: #2ea043; }
+        .btn.secondary { background: #21262d; }
+        .btn.secondary:hover { background: #30363d; }
+        .btn.danger { background: #da3633; }
+        .btn.danger:hover { background: #f85149; }
+        
+        .controls { display: flex; gap: 10px; margin-top: 15px; }
+        
+        .log { background: #0d1117; border: 1px solid #21262d; border-radius: 6px; padding: 15px; font-family: monospace; font-size: 12px; max-height: 300px; overflow-y: auto; }
+        .log-entry { padding: 3px 0; border-bottom: 1px solid #161b22; }
+        .log-entry.success { color: #3fb950; }
+        .log-entry.error { color: #f85149; }
+        .log-entry.warn { color: #d29922; }
+        
+        .ip-display { font-size: 32px; font-weight: bold; color: #58a6ff; text-align: center; padding: 20px; }
+        .mode-badge { background: #1f6feb; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #21262d; }
+        th { color: #8b949e; font-weight: normal; font-size: 12px; text-transform: uppercase; }
+        
+        .spinner { display: inline-block; width: 20px; height: 20px; border: 3px solid #21262d; border-radius: 50%; border-top-color: #58a6ff; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ IP Rotator Dashboard</h1>
+            <div>
+                <span class="mode-badge" id="mode">TOR</span>
+            </div>
+        </header>
+        
+        <div class="status-card">
+            <h3>Current Status</h3>
+            <div class="ip-display" id="currentIP">Loading...</div>
+            <div class="grid">
+                <div class="stat">
+                    <div class="stat-label">Status</div>
+                    <div class="stat-value" id="status">Checking...</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Total Rotations</div>
+                    <div class="stat-value" id="rotations">0</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Avg Latency</div>
+                    <div class="stat-value" id="latency">0ms</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Uptime</div>
+                    <div class="stat-value" id="uptime">0s</div>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="btn" onclick="rotateIP()">🔄 Rotate IP Now</button>
+                <button class="btn secondary" onclick="refreshStatus()">🔄 Refresh</button>
+            </div>
+        </div>
+        
+        <div class="grid">
+            <div class="status-card">
+                <h3>Rotation History</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>IP</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTable">
+                        <tr><td colspan="3">No history yet</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="status-card">
+                <h3>Recent Logs</h3>
+                <div class="log" id="logContainer">
+                    <div class="log-entry">Loading logs...</div>
+                </div>
+                <div class="controls">
+                    <button class="btn secondary" onclick="clearLogs()">Clear Logs</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="status-card">
+            <h3>Network Statistics</h3>
+            <div class="grid">
+                <div class="stat">
+                    <div class="stat-label">Checks Performed</div>
+                    <div class="stat-value" id="totalChecks">0</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Online Time</div>
+                    <div class="stat-value online" id="uptimePercent">100%</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Min Latency</div>
+                    <div class="stat-value" id="minLatency">0ms</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Max Latency</div>
+                    <div class="stat-value" id="maxLatency">0ms</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchStatus() {
+            try {
+                const res = await fetch('/api/status');
+                const data = await res.json();
+                
+                document.getElementById('currentIP').textContent = data.ip;
+                document.getElementById('mode').textContent = data.mode.toUpperCase();
+                document.getElementById('rotations').textContent = data.rotations;
+                document.getElementById('latency').textContent = data.network.avgLatency + 'ms';
+                document.getElementById('status').textContent = data.isRunning ? 'Running' : 'Stopped';
+                document.getElementById('status').className = 'stat-value ' + (data.isRunning ? 'online' : 'offline');
+                document.getElementById('uptime').textContent = formatUptime(data.uptime);
+                document.getElementById('totalChecks').textContent = data.network.totalChecks;
+                document.getElementById('uptimePercent').textContent = data.network.uptime + '%';
+                document.getElementById('minLatency').textContent = data.network.minLatency + 'ms';
+                document.getElementById('maxLatency').textContent = data.network.maxLatency + 'ms';
+            } catch (err) {
+                console.error('Failed to fetch status:', err);
+            }
+        }
+        
+        async function fetchHistory() {
+            try {
+                const res = await fetch('/api/history');
+                const data = await res.json();
+                const tbody = document.getElementById('historyTable');
+                
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="3">No history yet</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = data.slice(-10).reverse().map(entry => `
+                    <tr>
+                        <td>${new Date(entry.timestamp).toLocaleTimeString()}</td>
+                        <td>${entry.ip}</td>
+                        <td>${entry.type}</td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                console.error('Failed to fetch history:', err);
+            }
+        }
+        
+        async function fetchLogs() {
+            try {
+                const res = await fetch('/api/logs?lines=20');
+                const data = await res.json();
+                const container = document.getElementById('logContainer');
+                
+                if (data.length === 0) {
+                    container.innerHTML = '<div class="log-entry">No logs yet</div>';
+                    return;
+                }
+                
+                container.innerHTML = data.reverse().map(log => {
+                    let className = 'log-entry';
+                    if (log.includes('SUCCESS')) className += ' success';
+                    if (log.includes('ERROR')) className += ' error';
+                    if (log.includes('WARN')) className += ' warn';
+                    return `<div class="${className}">${log}</div>`;
+                }).join('');
+            } catch (err) {
+                console.error('Failed to fetch logs:', err);
+            }
+        }
+        
+        async function rotateIP() {
+            try {
+                const res = await fetch('/api/rotate', { method: 'POST' });
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('currentIP').textContent = data.ip;
+                    fetchHistory();
+                    fetchLogs();
+                }
+            } catch (err) {
+                console.error('Failed to rotate IP:', err);
+            }
+        }
+        
+        async function clearLogs() {
+            try {
+                await fetch('/api/logs/clear', { method: 'POST' });
+                fetchLogs();
+            } catch (err) {
+                console.error('Failed to clear logs:', err);
+            }
+        }
+        
+        function refreshStatus() {
+            fetchStatus();
+            fetchHistory();
+            fetchLogs();
+        }
+        
+        function formatUptime(seconds) {
+            if (seconds < 60) return seconds + 's';
+            if (seconds < 3600) return Math.floor(seconds/60) + 'm ' + (seconds%60) + 's';
+            return Math.floor(seconds/3600) + 'h ' + Math.floor((seconds%3600)/60) + 'm';
+        }
+        
+        // Initial load
+        refreshStatus();
+        
+        // Auto-refresh every 5 seconds
+        setInterval(refreshStatus, 5000);
+    </script>
+</body>
+</html>

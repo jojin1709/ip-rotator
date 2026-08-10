@@ -1,0 +1,43 @@
+{
+  "name": "ip-rotator",
+  "version": "1.0.0",
+  "description": "Automated IP and MAC address rotator for bug bounty and security testing",
+  "main": "rotator.js",
+  "bin": {
+    "ip-rotator": "./rotator.js",
+    "ir": "./rotator.js"
+  },
+  "scripts": {
+    "start": "node rotator.js",
+    "dashboard": "node rotator.js dashboard",
+    "test": "node rotator.js status"
+  },
+  "keywords": [
+    "ip-rotator",
+    "mac-changer",
+    "proxy",
+    "tor",
+    "bug-bounty",
+    "anonymity",
+    "security",
+    "privacy"
+  ],
+  "author": "JOJIN JOHN",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "chalk": "^4.1.2",
+    "commander": "^11.0.0",
+    "eventemitter3": "^5.0.1",
+    "express": "^4.18.2",
+    "http-proxy-agent": "^9.1.0",
+    "inquirer": "^8.2.6",
+    "open": "^8.4.2",
+    "socks-proxy-agent": "^10.1.0",
+    "user-agents": "^2.1.148",
+    "winston": "^3.11.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

@@ -1,0 +1,8 @@
+# Proxy List
+# Format: protocol://host:port
+# Protocols: http, https, socks4, socks5
+#
+# Example proxies (uncomment to use):
+# socks5://127.0.0.1:9050
+# http://proxy1.example.com:8080
+# socks4://proxy2.example.com:1080
